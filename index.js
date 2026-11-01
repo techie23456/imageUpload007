@@ -17,7 +17,8 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     // random name so users can't overwrite files or inject paths
     const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, crypto.randomBytes(16).toString("hex") + ext);
+    // cb(null, crypto.randomBytes(16).toString("hex") + ext);
+     cb(null, file.originalname); // crypto.randomBytes(16).toString("hex")
   },
 });
 
@@ -49,6 +50,8 @@ app.get("/", (req, res) => {
 app.post("/upload", upload.single("image"), (req, res) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
+  imageName = req.file.filename;
+
   res.json({
     message: "Upload successful",
     filename: req.file.filename,
@@ -56,6 +59,10 @@ app.post("/upload", upload.single("image"), (req, res) => {
     url: `/uploads/${req.file.filename}`,
   });
 });
+
+app.get("/preview",(req,res)=>{
+  res.send("<img src='/uploads/1.png'>")
+})
 
 // Error handler (file too large, wrong type, etc.)
 app.use((err, req, res, next) => {
