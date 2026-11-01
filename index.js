@@ -13,7 +13,7 @@ git commit -m "Stop tracking node_modules"
 */
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, UPLOAD_DIR),
+  destination: (req, file, cb) => cb(null,/tmp ),//UPLOAD_DIR
   filename: (req, file, cb) => {
     // random name so users can't overwrite files or inject paths
     const ext = path.extname(file.originalname).toLowerCase();
